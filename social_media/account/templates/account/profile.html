@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h5 class="text-center">username: {{user.username}}</h5>
+<h5 class="text-center">first name: {{user.first_name}}</h5>
+<h5 class="text-center">last name: {{user.last_name}}</h5>
+<h6 class="text-center">email address: {{user.email}}</h6>
+{% if  request.user.id == user.id%}
+<a href="{% url 'posts:post_create' %}" class="btn btn-primary">create</a>
+<a href="{% url 'account:edit_user' %}" class="btn btn-primary">edit profile</a>
+{% endif %}
+
+{% if request.user.id != user.id and not is_following %}
+    <a href="{% url 'account:user_follow' user.id %}" class="btn btn-primary">follow</a>
+{% elif request.user.id != user.id and  is_following %}
+    <a href="{% url 'account:user_unfollow' user.id %}" class="btn btn-primary">unfollow</a>
+{% endif %}
+
+
+
+{% for post in posts %}
+<h2>{{post.title}}</h2>
+<p>{{post.body}}</p>
+<small>{{post.created|date:"Y-M_D"}}</small>
+<hr>
+{% endfor %}
+{% endblock %}
